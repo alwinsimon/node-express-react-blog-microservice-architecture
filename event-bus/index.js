@@ -7,8 +7,13 @@ const PORT = 4005;
 
 app.use(bodyParser.json());
 
+let eventCount = 0;
+
 app.post("/events", (req, res) => {
   const event = req.body;
+
+  eventCount++;
+  console.log("Received Event request number: " + eventCount);
 
   axios.post("http://localhost:4000/events", event).catch((err) => {
     console.log(err.message);
