@@ -30,27 +30,43 @@ app.post('/events', (req, res) =>{
         
         posts[id] = { id, title, comments: [] };
 
-        console.log(posts[id]);
+        console.log("QUERY Service: Post Created");
 
         res.status(201).send({ status: 'Post Created'});
     }
 
     if ( type === 'CommentCreated' ){
         
-        const { id, content, postId } = data;
+        const { id, content, postId, status } = data;
 
-        posts[postId].comments.push({ id, content });
+        const postToUpdate = posts[postId];
 
-        console.log(posts[postId]);
+        postToUpdate.comments.push({ id, content, status });
+
+        console.log("QUERY Service: Comment Created");
 
         res.status(201).send({ status: 'Comment Added'});
     }
 
+    if ( type === 'CommentUpdated' ){
+        
+        const { id, content, postId, status } = data;
+
+        const postToUpdate = posts[postId];
+
+        const commentToUpdate = postToUpdate.comments.find((comment) =>{
+            return comment.id === id;
+        });
+
+        commentToUpdate.status = status;
+        commentToUpdate.content = content;
+
+        console.log(`Comment Id: ${id} of Post Id ${postId} Updated`);
+
+        res.status(201).send({ status: 'Comment Updated'});
+    }
+
 });
-
-
-
-
 
 
 

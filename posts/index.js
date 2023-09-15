@@ -46,7 +46,7 @@ app.post('/posts', async (req, res) => {
 // Responding to Event-Bus
 app.post('/events', (req, res) => {
 
-  console.log("Received Event: ", req.body.type);
+  console.log("POSTS Service Received Event: ", req.body.type);
 
   res.status(200).send({ message: 'Received Event'});
 });
