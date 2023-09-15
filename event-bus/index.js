@@ -9,8 +9,12 @@ app.use(bodyParser.json());
 
 let eventCount = 0;
 
+const eventBrokerStorage = [];
+
 app.post("/events", (req, res) => {
+
   const event = req.body;
+  eventBrokerStorage.push(event);
 
   eventCount++;
   console.log(`Received Event request number: ${eventCount} with Event Type: ${event.type}`);
@@ -30,6 +34,10 @@ app.post("/events", (req, res) => {
   });
 
   res.send({ status: "OK" });
+});
+
+app.get("/events", (req, res) => {
+  res.status(200).send(eventBrokerStorage);
 });
 
 

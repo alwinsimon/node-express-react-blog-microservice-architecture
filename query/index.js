@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+
 
 const app = express();
 
@@ -12,17 +14,8 @@ app.use(bodyParser.json());
 // DS to store the Data
 const posts = {};
 
-
-
-app.get('/posts', (req, res) =>{
-
-    res.status(201).send(posts);
-
-});
-
-app.post('/events', (req, res) =>{
-    
-    const { type, data } = req.body;
+// Event Handler Function
+const handleEvent = ( type, data ) => {
 
     if ( type === 'PostCreated' ){
 
@@ -32,7 +25,6 @@ app.post('/events', (req, res) =>{
 
         console.log("QUERY Service: Post Created");
 
-        res.status(201).send({ status: 'Post Created'});
     }
 
     if ( type === 'CommentCreated' ){
@@ -45,7 +37,6 @@ app.post('/events', (req, res) =>{
 
         console.log("QUERY Service: Comment Created");
 
-        res.status(201).send({ status: 'Comment Added'});
     }
 
     if ( type === 'CommentUpdated' ){
@@ -63,8 +54,23 @@ app.post('/events', (req, res) =>{
 
         console.log(`Comment Id: ${id} of Post Id ${postId} Updated`);
 
-        res.status(201).send({ status: 'Comment Updated'});
     }
+};
+
+
+app.get('/posts', (req, res) =>{
+
+    res.status(201).send(posts);
+
+});
+
+app.post('/events', (req, res) =>{
+    
+    const { type, data } = req.body;
+
+    handleEvent(type, data);
+
+    res.status(201).send(`Processed ${type} event`);
 
 });
 
@@ -74,6 +80,26 @@ app.post('/events', (req, res) =>{
 
 
 // Server Configuration
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`QUERY SERVICE Listening on PORT: ${PORT}`);
+
+    // Updating the server with the latest data from Event Broker
+    try {
+
+        const res = await axios.get("http://localhost:4005/events").catch((err) => {
+            console.log(err.message);
+        });
+
+        for (const event of res.data) {
+            console.log(`Processing Event : ${event.type}`);
+            handleEvent(event.type, event.data);
+        }
+
+    } catch (err) {
+
+        console.log(err.message);
+
+    }
+    
+
 });
