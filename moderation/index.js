@@ -28,7 +28,7 @@ app.post('/events', (req, res) => {
             }
         };
 
-        axios.post('http://localhost:4005/events', eventData);
+        axios.post('http://event-bus-srv:4005/events', eventData);
     }
     res.status(200).send({status: 'success'});
 });

@@ -86,7 +86,7 @@ app.listen(PORT, async () => {
     // Updating the server with the latest data from Event Broker
     try {
 
-        const res = await axios.get("http://localhost:4005/events").catch((err) => {
+        const res = await axios.get("http://event-bus-srv:4005/events").catch((err) => {
             console.log(err.message);
         });
 

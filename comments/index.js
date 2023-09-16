@@ -39,7 +39,7 @@ app.post('/posts/:id/comments', async (req, res) => {
     }
   };
 
-  await axios.post('http://localhost:4005/events', eventData).catch((err) => {
+  await axios.post('http://event-bus-srv:4005/events', eventData).catch((err) => {
     console.log(err.message);
   });
 
@@ -75,7 +75,7 @@ app.post('/events', async (req, res) => {
       },
     };
 
-    await axios.post("http://localhost:4005/events", eventData).catch((err) => {
+    await axios.post("http://event-bus-srv:4005/events", eventData).catch((err) => {
       console.log(err.message);
     });
   }
