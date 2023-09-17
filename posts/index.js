@@ -15,7 +15,7 @@ const PORT = 4000;
 const posts = {};
 
 // Route to get all posts
-app.get('/posts', (req, res) => {
+app.get('/posts/create', (req, res) => {
   res.send(posts);
 });
 

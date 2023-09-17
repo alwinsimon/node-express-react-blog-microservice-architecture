@@ -9,7 +9,7 @@ const PostCreate = () => {
 
     if(title === '') return; 
 
-    await axios.post("http://k8.posts.com/posts", {
+    await axios.post("http://k8.posts.com/posts/create", {
       title
     });
 
