@@ -3,8 +3,13 @@ import axios from "axios";
 import CommentCreate from "./CommentCreate";
 import CommentList from "./CommentList";
 
-const PostList = () => {
+const PostList = ( { postStatus } ) => {
   const [posts, setPosts] = useState({});
+
+  const [commentCreated, setCommentCreated] = useState(false);
+
+  // Function to toggle commentCreated state variable to trigger the useEffect
+  const handleCommentCreated = () => setCommentCreated(!commentCreated);
 
   const fetchPosts = async () => {
     const res = await axios.get("http://k8.posts.com/posts");
@@ -13,8 +18,10 @@ const PostList = () => {
   };
 
   useEffect(() => {
+
     fetchPosts();
-  }, []);
+
+  }, [ commentCreated, postStatus ]);
 
   const renderedPosts = Object.values(posts).map((post) => {
     return (
@@ -26,7 +33,7 @@ const PostList = () => {
         <div className="card-body">
           <h3>{post.title}</h3>
           { post.comments && <CommentList comments={post.comments}/> }
-          <CommentCreate postId={post.id}/>
+          <CommentCreate postId={post.id} handleCommentCreated={handleCommentCreated}/>
         </div>
       </div>
     );

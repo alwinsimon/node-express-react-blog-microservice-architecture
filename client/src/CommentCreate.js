@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CommentCreate = ({ postId }) => {
+const CommentCreate = ({ postId, handleCommentCreated }) => {
   const [content, setContent] = useState("");
 
   const onSubmit = async (event) => {
@@ -13,6 +13,12 @@ const CommentCreate = ({ postId }) => {
     });
 
     setContent("");
+    
+    // Wait for 1 second to allow the moderation service to process the comment
+    setTimeout(() => {
+      handleCommentCreated();
+    }, 100);
+
   };
 
   return (
