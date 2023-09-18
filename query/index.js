@@ -23,7 +23,7 @@ const handleEvent = ( type, data ) => {
         
         posts[id] = { id, title, comments: [] };
 
-        console.log("QUERY Service: Post Created");
+        console.log("QUERY Service completed a work: Post Created");
 
     }
 
@@ -35,7 +35,7 @@ const handleEvent = ( type, data ) => {
 
         postToUpdate.comments.push({ id, content, status });
 
-        console.log("QUERY Service: Comment Created");
+        console.log("QUERY Service completed a work: Comment Created");
 
     }
 
@@ -52,7 +52,7 @@ const handleEvent = ( type, data ) => {
         commentToUpdate.status = status;
         commentToUpdate.content = content;
 
-        console.log(`Comment Id: ${id} of Post Id ${postId} Updated`);
+        console.log(`QUERY Service completed a work: Comment Id: ${id} of Post Id ${postId} Updated`);
 
     }
 };
@@ -65,6 +65,8 @@ app.get('/posts', (req, res) =>{
 });
 
 app.post('/events', (req, res) =>{
+
+    console.log("QUERY Service Received Event: ", req.body.type);
     
     const { type, data } = req.body;
 

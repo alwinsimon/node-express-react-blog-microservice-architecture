@@ -29,6 +29,8 @@ app.post('/posts/create', async (req, res) => {
     title
   };
 
+  console.log("POSTS Service completed a work: Post Created");
+
   // Publishing Event To Event-Bus
   const eventData = {
     type: "PostCreated",

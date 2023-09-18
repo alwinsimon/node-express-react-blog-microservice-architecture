@@ -28,6 +28,8 @@ app.post('/posts/:id/comments', async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
+  console.log("COMMENTS Service completed a work: Comment Created");
+
   // Publishing Event To Event-Bus
   const eventData = {
     type: "CommentCreated",
@@ -63,6 +65,8 @@ app.post('/events', async (req, res) => {
     });
 
     commentToUpdate.status = status;
+
+    console.log("COMMENTS Service completed a work: Comment Updated");
 
     // Publishing Event To Event-Bus
     const eventData = {
