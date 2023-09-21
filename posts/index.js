@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { randomBytes } = require('crypto');
 const cors = require ('cors');
+const axios = require("axios");
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,7 +20,7 @@ app.get('/posts', (req, res) => {
 });
 
 // Route to add new post
-app.post('/posts', (req, res) => {
+app.post('/posts/create', async (req, res) => {
   const id = randomBytes(4).toString('hex');
   const { title } = req.body;
 
@@ -28,9 +29,29 @@ app.post('/posts', (req, res) => {
     title
   };
 
+  console.log("POSTS Service completed a work: Post Created");
+
+  // Publishing Event To Event-Bus
+  const eventData = {
+    type: "PostCreated",
+    data: { id, title }
+  };
+
+  await axios.post('http://event-bus-srv:4005/events', eventData).catch((err) => {
+    console.log(err.message);
+  });
+
   res.status(201).send(posts[id]);
 });
 
+
+// Responding to Event-Bus
+app.post('/events', (req, res) => {
+
+  console.log("POSTS Service Received Event: ", req.body.type);
+
+  res.status(200).send({ message: 'Received Event'});
+});
 
 
 // Server Configuration

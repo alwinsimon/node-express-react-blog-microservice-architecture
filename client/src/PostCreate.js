@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const PostCreate = () => {
+const PostCreate = ( { changePostStatus } ) => {
   const [title, setTitle] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post("http://localhost:4000/posts", {
-      title,
+    if(title === '') return; 
+
+    await axios.post("http://k8.posts.com/posts/create", {
+      title
     });
 
     setTitle("");
+
+    changePostStatus();
+
   };
 
   return (
